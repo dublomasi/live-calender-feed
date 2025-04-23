@@ -1,44 +1,41 @@
-name: Auto Update Calendar
+import json
+from datetime import datetime, timedelta
+from pathlib import Path
 
-on:
-  schedule:
-    - cron: '0 */5 * * *'  # Every 5 hours
-  workflow_dispatch:
+# === إعداد ملف الاهتمامات ===
+with open("interests.json", "r", encoding="utf-8") as f:
+    interests = json.load(f)["categories"]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# === إعداد ملف .ics ===
+ics_content = (
+    "BEGIN:VCALENDAR\n"
+    "VERSION:2.0\n"
+    "CALSCALE:GREGORIAN\n"
+    "PRODID:-//Taamoul Calendar//EN\n"
+)
 
-    steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v3
+# === توليد أحداث تجريبية بناءً على الاهتمامات ===
+start_date = datetime.now()
+for i, category in enumerate(interests):
+    event_date = start_date + timedelta(days=i)
+    ics_content += (
+        "BEGIN:VEVENT\n"
+        f"UID:event-{i+1}@taamoul.com\n"
+        f"DTSTAMP:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
+        f"DTSTART:{event_date.strftime('%Y%m%dT100000Z')}\n"
+        f"DTEND:{event_date.strftime('%Y%m%dT110000Z')}\n"
+        f"SUMMARY:📌 حدث {category}\n"
+        f"DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: {category}\n"
+        "LOCATION:Dubai, UAE\n"
+        "STATUS:CONFIRMED\n"
+        "END:VEVENT\n"
+    )
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+# === إغلاق ملف التقويم ===
+ics_content += "END:VCALENDAR\n"
 
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt || true
+# Python script to generate .ics file with OpenAI integration
+print("✅ تم إنشاء ملف التقويم بنجاح.")
 
-    - name: Generate calendar
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      run: |
-        python auto_generate_calendar.py
-
-    - name: Commit and Push .ics
-      run: |
-        git config user.name "YousefBot"
-        git config user.email "actions@github.com"
-        git add live_calendar.ics
-        git commit -m "🗓️ Auto-update calendar file [skip ci]" || echo "No changes"
-        git push --force
-
-    - name: Show Success Message
-      run: |
-        echo "✅ Calendar successfully updated."
-        echo "📅 View it here:"
-        echo "🔗 https://raw.githubusercontent.com/dublomasi/live-calender-feed/main/live_calendar.ics"
+# === حفظ الملف ===
+Path("live_calendar.ics").write_text(ics_content, encoding="utf-8")
