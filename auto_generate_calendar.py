@@ -3,10 +3,8 @@ import os
 from datetime import datetime, timedelta
 import random
 
-# تحميل مفتاح OpenAI من متغير البيئة
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# تصنيفات الفعاليات ونبرة الكتابة المخصصة لكل فئة
 categories = {
     "Aviation": {"emoji": "✈️", "tone": "technical and professional"},
     "Lifestyle": {"emoji": "💫", "tone": "elegant and refined"},
@@ -30,7 +28,6 @@ def get_openai_event(category):
     )
     text = response.choices[0].message.content.strip()
 
-    # استخراج معلومات الحدث من النص
     title = text.splitlines()[0].strip()
     description = "\\n".join(text.splitlines()[1:]).strip()
     location = "Dubai"
@@ -63,7 +60,7 @@ def generate_calendar():
 
     for day_offset in range(0, 2):  # اليوم واليوم التالي
         date = now + timedelta(days=day_offset)
-        for _ in range(25):  # توليد حتى 50 فعالية إجمالية
+        for _ in range(25):  # إجمالي حتى 50 فعالية
             category = random.choice(list(categories.keys()))
             try:
                 event_data = get_openai_event(category)
@@ -76,6 +73,9 @@ def generate_calendar():
     ics = "BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//Taamoul Calendar//EN\n" + "\n".join(events) + "\nEND:VCALENDAR"
     with open("live_calendar.ics", "w", encoding="utf-8") as f:
         f.write(ics)
+
+    print(f"\n✅ Calendar updated successfully with {len(events)} events.")
+    print("📅 View your live calendar: https://raw.githubusercontent.com/dublomasi/live-calender-feed/main/live_calendar.ics\n")
 
 if __name__ == "__main__":
     generate_calendar()
