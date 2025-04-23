@@ -1,0 +1,1 @@
+# Python script to generate .ics file with OpenAI integration
