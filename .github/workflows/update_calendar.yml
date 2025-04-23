@@ -2,7 +2,7 @@ name: Auto Update Calendar
 
 on:
   schedule:
-    - cron: '0 4 * * *'  # Every day at 8AM Dubai time (4AM UTC)
+    - cron: '0 4 * * *'  # 8AM Dubai time daily
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Important for git pull to work
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -32,7 +34,7 @@ jobs:
         run: |
           git config user.name "YousefBot"
           git config user.email "actions@github.com"
-          git pull --rebase
+          git pull --rebase origin main || true
           git add live_calendar.ics
           git commit -m "📅 Auto-update calendar file [skip ci]" || echo "No changes"
           git push https://x-access-token:${GH_TOKEN}@github.com/dublomasi/live-calender-feed.git HEAD:main
