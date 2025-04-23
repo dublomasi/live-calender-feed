@@ -3,7 +3,7 @@ name: Auto Update Calendar
 on:
   schedule:
     - cron: '0 4 * * *'  # Every day at 8AM Dubai time (4AM UTC)
-  workflow_dispatch:
+  workflow_dispatch:     # Allows manual trigger
 
 jobs:
   build:
@@ -21,18 +21,16 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt || true  # Optional fallback
 
       - name: Generate calendar
         run: python auto_generate_calendar.py
 
       - name: Commit and Push .ics
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config user.name "YousefBot"
           git config user.email "actions@github.com"
-          git pull origin main --rebase || true
           git add live_calendar.ics
-          git commit -m "📅 Auto-update calendar file [skip ci]" || echo "No changes"
-          git push https://x-access-token:${GH_TOKEN}@github.com/dublomasi/live-calender-feed.git HEAD:main
+          git commit -m "🗓️ Auto-update calendar file [skip ci]" || echo "No changes"
+          git pull origin main --rebase || echo "No remote changes to rebase"
+          git push origin main || echo "Push failed, but continuing"
