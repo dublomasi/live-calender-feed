@@ -1,28 +1,95 @@
 BEGIN:VCALENDAR
 VERSION:2.0
+CALSCALE:GREGORIAN
 PRODID:-//Taamoul Calendar//EN
 BEGIN:VEVENT
-SUMMARY:🎨 Dubai Art Show
-DTSTART;TZID=Asia/Dubai:20250425T180000
-DTEND;TZID=Asia/Dubai:20250425T210000
-DESCRIPTION:An exclusive showcase of modern and contemporary art in Dubai.\nURL: https://dubaiexhibitions.com/artshow\nContact: info@dubaiexhibitions.com
-LOCATION:Dubai World Trade Centre
-URL:https://dubaiexhibitions.com/artshow
+UID:meditation-0@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250423T100000Z
+DTEND:20250423T110000Z
+SUMMARY:✨ Meditation Experience
+DESCRIPTION:Automatic event generated for category: meditation
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:🎭 GCC Comedy Night
-DTSTART;TZID=Asia/Dubai:20250426T200000
-DTEND;TZID=Asia/Dubai:20250426T220000
-DESCRIPTION:A hilarious evening with top comedians from the GCC.\nURL: https://dubaiopera.com/comedy\nContact: laughs@dubaiopera.com
-LOCATION:Dubai Opera
-URL:https://dubaiopera.com/comedy
+UID:art-1@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250424T100000Z
+DTEND:20250424T110000Z
+SUMMARY:✨ Art Experience
+DESCRIPTION:Automatic event generated for category: art
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:🐾 UAE Pet Lovers Meetup
-DTSTART;TZID=Asia/Dubai:20250427T100000
-DTEND;TZID=Asia/Dubai:20250427T130000
-DESCRIPTION:A fun-filled social for pet owners and animal enthusiasts.\nURL: https://uaepetsocial.com\nContact: contact@uaepetsocial.com
-LOCATION:Zabeel Park, Dubai
-URL:https://uaepetsocial.com
+UID:aviation-2@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250425T100000Z
+DTEND:20250425T110000Z
+SUMMARY:✨ Aviation Experience
+DESCRIPTION:Automatic event generated for category: aviation
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:exhibitions-3@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250426T100000Z
+DTEND:20250426T110000Z
+SUMMARY:✨ Exhibitions Experience
+DESCRIPTION:Automatic event generated for category: exhibitions
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:luxury-4@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250427T100000Z
+DTEND:20250427T110000Z
+SUMMARY:✨ Luxury Experience
+DESCRIPTION:Automatic event generated for category: luxury
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:pets_uae-5@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250428T100000Z
+DTEND:20250428T110000Z
+SUMMARY:✨ Pets_uae Experience
+DESCRIPTION:Automatic event generated for category: pets_uae
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:comedy_uae-6@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250429T100000Z
+DTEND:20250429T110000Z
+SUMMARY:✨ Comedy_uae Experience
+DESCRIPTION:Automatic event generated for category: comedy_uae
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:comedy_gcc-7@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250430T100000Z
+DTEND:20250430T110000Z
+SUMMARY:✨ Comedy_gcc Experience
+DESCRIPTION:Automatic event generated for category: comedy_gcc
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:exhibitions_uae-8@taamoul.com
+DTSTAMP:20250423T063812Z
+DTSTART:20250501T100000Z
+DTEND:20250501T110000Z
+SUMMARY:✨ Exhibitions_uae Experience
+DESCRIPTION:Automatic event generated for category: exhibitions_uae
+LOCATION:Dubai, UAE
+STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
