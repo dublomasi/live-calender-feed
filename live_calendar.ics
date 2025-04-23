@@ -2,94 +2,38 @@ BEGIN:VCALENDAR
 VERSION:2.0
 CALSCALE:GREGORIAN
 PRODID:-//Taamoul Calendar//EN
+
 BEGIN:VEVENT
-UID:event-1@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250423T100000Z
-DTEND:20250423T110000Z
-SUMMARY:📌 حدث meditation
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: meditation
-LOCATION:Dubai, UAE
+UID:event-001@taamoul.com
+DTSTAMP:20250423T140000Z
+DTSTART:20250424T120000Z
+DTEND:20250424T150000Z
+SUMMARY:🎨 Art Dubai at Alserkal Avenue
+DESCRIPTION:A vibrant celebration of contemporary creativity! More info at Visit Dubai
+LOCATION:Alserkal Avenue, Dubai
 STATUS:CONFIRMED
 END:VEVENT
+
 BEGIN:VEVENT
-UID:event-2@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250424T100000Z
-DTEND:20250424T110000Z
-SUMMARY:📌 حدث art
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: art
-LOCATION:Dubai, UAE
+UID:event-002@taamoul.com
+DTSTAMP:20250423T140000Z
+DTSTART:20250425T060000Z
+DTEND:20250425T090000Z
+SUMMARY:✈️ Dubai Aviation Forum
+DESCRIPTION:Explore the future of flight with global experts. Details on Eventbrite
+LOCATION:Dubai World Trade Centre
 STATUS:CONFIRMED
 END:VEVENT
+
 BEGIN:VEVENT
-UID:event-3@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250425T100000Z
-DTEND:20250425T110000Z
-SUMMARY:📌 حدث aviation
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: aviation
-LOCATION:Dubai, UAE
+UID:event-003@taamoul.com
+DTSTAMP:20250423T140000Z
+DTSTART:20250426T070000Z
+DTEND:20250426T100000Z
+SUMMARY:🛍️ Lifestyle & Wellness Expo
+DESCRIPTION:Find your balance with luxury brands and wellness gurus! Hosted via Dubai Calendar
+LOCATION:Dubai Exhibition Centre
 STATUS:CONFIRMED
 END:VEVENT
-BEGIN:VEVENT
-UID:event-4@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250426T100000Z
-DTEND:20250426T110000Z
-SUMMARY:📌 حدث exhibitions
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: exhibitions
-LOCATION:Dubai, UAE
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-5@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250427T100000Z
-DTEND:20250427T110000Z
-SUMMARY:📌 حدث luxury
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: luxury
-LOCATION:Dubai, UAE
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-6@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250428T100000Z
-DTEND:20250428T110000Z
-SUMMARY:📌 حدث pets_uae
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: pets_uae
-LOCATION:Dubai, UAE
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-7@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250429T100000Z
-DTEND:20250429T110000Z
-SUMMARY:📌 حدث comedy_uae
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: comedy_uae
-LOCATION:Dubai, UAE
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-8@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250430T100000Z
-DTEND:20250430T110000Z
-SUMMARY:📌 حدث comedy_gcc
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: comedy_gcc
-LOCATION:Dubai, UAE
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:event-9@taamoul.com
-DTSTAMP:20250423T141547Z
-DTSTART:20250501T100000Z
-DTEND:20250501T110000Z
-SUMMARY:📌 حدث exhibitions_uae
-DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: exhibitions_uae
-LOCATION:Dubai, UAE
-STATUS:CONFIRMED
-END:VEVENT
+
 END:VCALENDAR
