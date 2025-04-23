@@ -2,7 +2,7 @@ name: Auto Update Calendar
 
 on:
   schedule:
-    - cron: '0 4 * * *' # كل يوم الساعة 8 صباحاً بتوقيت الإمارات (4AM UTC)
+    - cron: '0 4 * * *'  # كل يوم الساعة 8 صباحاً بتوقيت الإمارات
   workflow_dispatch:
 
 jobs:
@@ -21,10 +21,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt || true  # اختيارية إذا لم توجد مكتبة
+          pip install -r requirements.txt || true
 
       - name: Generate calendar
-        run: python auto_generate_calendar.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python auto_generate_calendar.py
 
       - name: Commit and Push .ics
         run: |
@@ -33,3 +36,9 @@ jobs:
           git add live_calendar.ics
           git commit -m "📅 Auto-update calendar file [skip ci]" || echo "No changes"
           git push --force
+
+      - name: Show Success Message
+        run: |
+          echo "✅ Calendar successfully updated."
+          echo "📅 View it here:"
+          echo "🔗 https://raw.githubusercontent.com/dublomasi/live-calender-feed/main/live_calendar.ics"
