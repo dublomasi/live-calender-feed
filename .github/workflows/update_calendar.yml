@@ -2,7 +2,7 @@ name: Auto Update Calendar
 
 on:
   schedule:
-    - cron: '0 4 * * *' # Runs every day at 8AM UAE time (4AM UTC)
+    - cron: '0 4 * * *' # كل يوم الساعة 8 صباحاً بتوقيت الإمارات (4AM UTC)
   workflow_dispatch:
 
 jobs:
@@ -21,16 +21,15 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt || true  # اختيارية إذا لم توجد مكتبة
 
       - name: Generate calendar
         run: python auto_generate_calendar.py
 
       - name: Commit and Push .ics
-           run: |
-             git config user.name "YousefBot"
-            git config user.email "actions@github.com"
-            git add live_calendar.ics
-            git commit -m "📅 Auto-update calendar file [skip ci]" || echo "No changes"
-            git push --force
-          
+        run: |
+          git config user.name "YousefBot"
+          git config user.email "actions@github.com"
+          git add live_calendar.ics
+          git commit -m "📅 Auto-update calendar file [skip ci]" || echo "No changes"
+          git push --force
