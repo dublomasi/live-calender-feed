@@ -2,8 +2,8 @@ name: Auto Update Calendar
 
 on:
   schedule:
-    - cron: '0 4 * * *'  # كل يوم الساعة 8 صباحاً بتوقيت الإمارات (4AM UTC)
-  workflow_dispatch:      # يسمح بتشغيله يدويًا من GitHub
+    - cron: '0 4 * * *' # كل يوم الساعة 8 صباحاً بتوقيت الإمارات (4AM UTC)
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt || true  # اختياري إذا لم تكن هناك متطلبات
+          pip install -r requirements.txt || true  # اختياري إذا لم توجد متطلبات
 
       - name: Generate calendar
         run: python auto_generate_calendar.py
@@ -31,5 +31,6 @@ jobs:
           git config user.name "YousefBot"
           git config user.email "actions@github.com"
           git add live_calendar.ics
-          git commit -m "📅 Auto-update calendar file [skip ci]" || echo "No changes"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+          git commit -m "🗓️ Auto-update calendar file [skip ci]" || echo "No changes"
+          git pull --rebase --no-edit origin main
+          git push
