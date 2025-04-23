@@ -1,0 +1,28 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Taamoul Calendar//EN
+BEGIN:VEVENT
+SUMMARY:🎨 Dubai Art Show
+DTSTART;TZID=Asia/Dubai:20250425T180000
+DTEND;TZID=Asia/Dubai:20250425T210000
+DESCRIPTION:An exclusive showcase of modern and contemporary art in Dubai.\nURL: https://dubaiexhibitions.com/artshow\nContact: info@dubaiexhibitions.com
+LOCATION:Dubai World Trade Centre
+URL:https://dubaiexhibitions.com/artshow
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:🎭 GCC Comedy Night
+DTSTART;TZID=Asia/Dubai:20250426T200000
+DTEND;TZID=Asia/Dubai:20250426T220000
+DESCRIPTION:A hilarious evening with top comedians from the GCC.\nURL: https://dubaiopera.com/comedy\nContact: laughs@dubaiopera.com
+LOCATION:Dubai Opera
+URL:https://dubaiopera.com/comedy
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:🐾 UAE Pet Lovers Meetup
+DTSTART;TZID=Asia/Dubai:20250427T100000
+DTEND;TZID=Asia/Dubai:20250427T130000
+DESCRIPTION:A fun-filled social for pet owners and animal enthusiasts.\nURL: https://uaepetsocial.com\nContact: contact@uaepetsocial.com
+LOCATION:Zabeel Park, Dubai
+URL:https://uaepetsocial.com
+END:VEVENT
+END:VCALENDAR
