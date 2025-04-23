@@ -1,81 +1,82 @@
 import openai
+import pytz
 import os
-from datetime import datetime, timedelta
-import random
+import datetime
+from ics import Calendar, Event
 
+# Set your OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-categories = {
-    "Aviation": {"emoji": "✈️", "tone": "technical and professional"},
-    "Lifestyle": {"emoji": "💫", "tone": "elegant and refined"},
-    "Exhibition": {"emoji": "🖼️", "tone": "informative and descriptive"},
-    "Seasonal": {"emoji": "🌿", "tone": "inspiring and uplifting"},
-}
+# Settings
+NUM_DAYS_AHEAD = 60  # Rolling window
+MAX_EVENTS_PER_DAY = 50
+TIMEZONE = pytz.timezone("Asia/Dubai")
 
-def generate_event_prompt(category, tone):
-    return f"Write a {tone} short event description for a public calendar. Include a title, short paragraph, location in Dubai, a public email, and a public website link. The event category is {category.lower()}."
+# Event categories to use
+CATEGORIES = ["Aviation", "Lifestyle", "Exhibitions", "Seasonal"]
 
-def get_openai_event(category):
-    prompt = generate_event_prompt(category, categories[category]["tone"])
+# Prompt Template
+PROMPT_TEMPLATE = """
+Generate {num_events} unique {category} events happening in Dubai, UAE between {start_date} and {end_date}.
+For each event include:
+1. Title (max 10 words)
+2. 1-paragraph description in English
+3. Realistic time (HH:MM) and date
+4. Location (real or logical, e.g., Dubai World Trade Centre)
+5. Contact email (if available or realistic placeholder)
+6. Ticket or registration link (realistic or dummy)
+
+Format it in JSON with keys: title, description, date, time, location, contact_email, ticket_link.
+"""
+
+def fetch_events(category, start_date, end_date, num_events):
+    prompt = PROMPT_TEMPLATE.format(
+        category=category,
+        num_events=num_events,
+        start_date=start_date.strftime("%B %d, %Y"),
+        end_date=end_date.strftime("%B %d, %Y"),
+    )
     response = openai.ChatCompletion.create(
         model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a professional event planner."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=300,
-        temperature=0.8
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
     )
-    text = response.choices[0].message.content.strip()
+    content = response["choices"][0]["message"]["content"]
+    return content
 
-    title = text.splitlines()[0].strip()
-    description = "\\n".join(text.splitlines()[1:]).strip()
-    location = "Dubai"
-    url = "https://example.com"
-    email = "contact@example.com"
-
-    return {
-        "title": title,
-        "description": description,
-        "location": location,
-        "url": url,
-        "contact_email": email,
-        "emoji": categories[category]["emoji"]
-    }
-
-def format_event_ics(event, start_time, end_time):
-    return f"""BEGIN:VEVENT
-SUMMARY:{event['emoji']} {event['title']}
-DTSTART;TZID=Asia/Dubai:{start_time.strftime('%Y%m%dT%H%M%S')}
-DTEND;TZID=Asia/Dubai:{end_time.strftime('%Y%m%dT%H%M%S')}
-DESCRIPTION:{event['description']}\\nURL: {event['url']}\\nContact: {event['contact_email']}
-LOCATION:{event['location']}
-URL:{event['url']}
-STATUS:CONFIRMED
-END:VEVENT"""
+def parse_events(json_text):
+    import json
+    try:
+        events = json.loads(json_text)
+        return events if isinstance(events, list) else []
+    except Exception:
+        return []
 
 def generate_calendar():
-    now = datetime.now()
-    events = []
+    cal = Calendar()
+    today = datetime.datetime.now(TIMEZONE).date()
+    end_date = today + datetime.timedelta(days=NUM_DAYS_AHEAD)
 
-    for day_offset in range(0, 2):  # اليوم واليوم التالي
-        date = now + timedelta(days=day_offset)
-        for _ in range(25):  # إجمالي حتى 50 فعالية
-            category = random.choice(list(categories.keys()))
-            try:
-                event_data = get_openai_event(category)
-                start_time = date.replace(hour=random.choice([10, 14, 18]), minute=0, second=0, microsecond=0)
-                end_time = start_time + timedelta(hours=2)
-                events.append(format_event_ics(event_data, start_time, end_time))
-            except Exception as e:
-                print(f"OpenAI error: {e}")
+    for day_offset in range(NUM_DAYS_AHEAD):
+        day = today + datetime.timedelta(days=day_offset)
+        for category in CATEGORIES:
+            response_text = fetch_events(category, day, day, min(5, MAX_EVENTS_PER_DAY))
+            parsed = parse_events(response_text)
+            for item in parsed[:MAX_EVENTS_PER_DAY]:
+                try:
+                    event = Event()
+                    event.name = item["title"]
+                    dt_str = f"{item['date']} {item['time']}"
+                    event.begin = TIMEZONE.localize(datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M"))
+                    event.duration = datetime.timedelta(hours=2)
+                    event.description = f"{item['description']}\n\nContact: {item.get('contact_email', 'N/A')}\nTickets: {item.get('ticket_link', '')}"
+                    event.location = item.get("location", "")
+                    cal.events.add(event)
+                except Exception:
+                    continue  # Skip malformed entries
 
-    ics = "BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//Taamoul Calendar//EN\n" + "\n".join(events) + "\nEND:VCALENDAR"
-    with open("live_calendar.ics", "w", encoding="utf-8") as f:
-        f.write(ics)
-
-    print(f"\n✅ Calendar updated successfully with {len(events)} events.")
-    print("📅 View your live calendar: https://raw.githubusercontent.com/dublomasi/live-calender-feed/main/live_calendar.ics\n")
+    with open("live_calendar.ics", "w") as f:
+        f.writelines(cal.serialize_iter())
 
 if __name__ == "__main__":
     generate_calendar()
