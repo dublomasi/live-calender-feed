@@ -1,41 +1,51 @@
-import json
-from datetime import datetime, timedelta
-from pathlib import Path
+name: Auto Update Calendar
 
-# === إعداد ملف الاهتمامات ===
-with open("interests.json", "r", encoding="utf-8") as f:
-    interests = json.load(f)["categories"]
+# Triggers: every 5 hours + manual dispatch
+on:
+  schedule:
+    - cron:  '0 */5 * * *'    # At-minute 0, every 5th hour, every day
+  workflow_dispatch:         # Allows you to “Run workflow” on demand
 
-# === إعداد ملف .ics ===
-ics_content = (
-    "BEGIN:VCALENDAR\n"
-    "VERSION:2.0\n"
-    "CALSCALE:GREGORIAN\n"
-    "PRODID:-//Taamoul Calendar//EN\n"
-)
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-# === توليد أحداث تجريبية بناءً على الاهتمامات ===
-start_date = datetime.now()
-for i, category in enumerate(interests):
-    event_date = start_date + timedelta(days=i)
-    ics_content += (
-        "BEGIN:VEVENT\n"
-        f"UID:event-{i+1}@taamoul.com\n"
-        f"DTSTAMP:{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}\n"
-        f"DTSTART:{event_date.strftime('%Y%m%dT100000Z')}\n"
-        f"DTEND:{event_date.strftime('%Y%m%dT110000Z')}\n"
-        f"SUMMARY:📌 حدث {category}\n"
-        f"DESCRIPTION:تم إنشاء هذا الحدث لاختبار عرض التقويم للفئة: {category}\n"
-        "LOCATION:Dubai, UAE\n"
-        "STATUS:CONFIRMED\n"
-        "END:VEVENT\n"
-    )
+    steps:
+      # 1) Check out your repo code
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-# === إغلاق ملف التقويم ===
-ics_content += "END:VCALENDAR\n"
+      # 2) Install Python 3.11
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-# Python script to generate .ics file with OpenAI integration
-print("✅ تم إنشاء ملف التقويم بنجاح.")
+      # 3) Install dependencies from requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-# === حفظ الملف ===
-Path("live_calendar.ics").write_text(ics_content, encoding="utf-8")
+      # 4) Generate the ICS calendar file
+      - name: Generate live_calendar.ics
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python auto_generate_calendar.py
+
+      # 5) Commit & push the updated ICS back to GitHub
+      - name: Commit and push updated calendar
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add live_calendar.ics
+          git commit -m "🗓️ Auto-update live_calendar.ics [skip ci]" || echo "No changes to commit"
+          git push
+
+      # 6) Success message
+      - name: Notify success
+        run: |
+          echo "✅ live_calendar.ics has been updated and pushed."
+          echo "🔗 Raw ICS URL:"
+          echo "https://raw.githubusercontent.com/${{ github.repository }}/main/live_calendar.ics"
